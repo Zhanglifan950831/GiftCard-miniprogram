@@ -1,0 +1,92 @@
+.card-poster {
+    padding: 20rpx 40rpx;
+}
+
+.card-poster image {
+    height: 440rpx;
+    width: 100%;
+    border-radius: 20rpx;
+}
+
+.dedication {
+}
+
+.dedication > .info{
+    border-left: 10rpx solid #44bf3b;
+    display: flex;
+    padding: 10rpx 50rpx;
+    padding-left: 20rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    font-weight: bold;
+    color: #333;
+    font-size: 30rpx;
+}
+
+.card-info {
+    width: 100%;
+}
+
+.card-info text {
+    padding: 0 10rpx;
+}
+
+.dedication-content {
+    padding: 20rpx 40rpx;
+    position: relative;
+    font-size: 30rpx;
+    color: #333;
+}
+
+.dedication-content span {
+    position: absolute;
+    left: 40rpx;
+    top: 30rpx;
+    z-index: 1;
+}
+
+.msg-info {
+    width: 100%;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAArMAAABGAgMAAACiSfQLAAAACVBMVEX////Y2Nj19fXNSjChAAAAPElEQVRo3u3OsQkAIQAEwW/yHjEytSBLsE9rEDQQZoKN9wMAAAAAAAAAAAAAYFcyU8+ljPT8l9Ieu33KAt4/igmGPNT+AAAAAElFTkSuQmCC);
+    background-size: 90%;
+    padding-bottom: 70rpx;
+}
+
+.remark {
+    margin-left: 80rpx;
+    font-size: 30rpx;
+    line-height: 62rpx;
+}
+
+.from-user {
+    position: absolute;
+    bottom: 45rpx;
+    right: 50rpx;
+}
+
+.receive-footer {
+    padding: 20rpx 30rpx;
+    display: flex;
+    position: fixed;
+    width: 90%;
+    bottom: 30rpx;
+}
+
+.receive-footer button {
+    width: 48%;
+    border: 0;
+    background-color: #44bf3b;
+    color: #fff;
+    text-align: center;
+    height: 70rpx;
+    line-height: 70rpx;
+    border-radius: 70rpx;
+    font-size: 30rpx;
+}
+
+.receive-footer button:first-child {
+    margin-right: 20rpx;
+    background-color: #fff;
+    color: #44bf3b;
+    border: 1rpx solid #44bf3b;
+}

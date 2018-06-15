@@ -1,0 +1,10 @@
+<view class="modal-mask" wx:if="{{isShow}}"></view>
+<view class="modal-dialog" wx:if="{{isShow}}">
+    <view class="modal-body">
+        是否允许获取你的手机号？
+    </view>
+    <view class="modal-footer">
+        <button bindtap="closeModal">取消</button>
+        <button class="confirm" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">确定</button>
+    </view>
+</view>

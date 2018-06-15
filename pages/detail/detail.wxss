@@ -1,0 +1,36 @@
+.detail-pic {
+    padding: 20rpx 40rpx;
+    border-top: 1rpx solid #dbdbdb;
+}
+
+.detail-pic image {
+    width: 100%;
+    height: 400rpx;
+    border-radius: 20rpx;
+}
+
+.detail-content {
+
+}
+
+.detail-content .item {
+    display: flex;
+    min-height: 40rpx;
+    padding: 20rpx 40rpx;
+    font-size: 28rpx;
+    border-top: 1rpx solid #dbdbdb;
+}
+
+.detail-content .item:last-child {
+    border-bottom: 1rpx solid #dbdbdb;
+}
+
+.detail-content .item .description {
+    width: 25%;
+    color: #999;
+}
+
+.detail-content .item .info-text {
+    width: 75%;
+    color: #333;
+}

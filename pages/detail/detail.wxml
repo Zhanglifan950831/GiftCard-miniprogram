@@ -1,0 +1,42 @@
+<view class="container">
+    <view class="detail-pic">
+        <image src="{{cardDetail.modelPic}}"/>
+    </view>
+
+    <view class="detail-content">
+        <view class="item">
+            <view class="description">礼品卡号</view>
+            <view class="info-text">
+                <view wx:for="{{cardDetail.cardNoList}}" wx:key="unique">{{item}}</view>
+            </view>
+        </view>
+        <view class="item">
+            <view class="description">卡面值</view>
+            <view class="info-text">￥{{cardDetail.cardValue}}</view>
+        </view>
+        <view class="item">
+            <view class="description">卡内余额</view>
+            <view class="info-text">￥{{cardDetail.balance}}</view>
+        </view>
+        <view class="item">
+            <view class="description">当前状态</view>
+            <view class="info-text">{{cardDetail.userCardStatus}}</view>
+        </view>
+        <view class="item">
+            <view class="description">购卡时间</view>
+            <view class="info-text">{{cardDetail.buyDatetime}}</view>
+        </view>
+        <view class="item">
+            <view class="description">有效时间</view>
+            <view class="info-text">{{cardDetail.invalidDatetime}}</view>
+        </view>
+        <view class="item">
+            <view class="description">购卡订单</view>
+            <view class="info-text">{{cardDetail.buyOrderNo}}</view>
+        </view>
+        <view class="item">
+            <view class="description">适用商品</view>
+            <view class="info-text">自营商品（特殊商品除外）</view>
+        </view>
+    </view>
+</view>

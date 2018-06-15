@@ -1,0 +1,193 @@
+.card-poster {
+    border-top: 1rpx solid #dbdbdb;
+    padding: 20rpx 40rpx;
+}
+
+.card-poster image {
+    height: 400rpx;
+    width: 100%;
+    border-radius: 32rpx;
+    box-shadow: 0 10rpx 10rpx #aaa; 
+}
+
+.card-pattern {
+
+}
+
+.flex {
+    display: flex;
+}
+
+.card-pattern > .title, .card-face > .title, .custom-face > .title {
+    border-left: 10rpx solid #44bf3b;
+    padding: 10rpx 50rpx;
+    padding-left: 20rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    font-weight: bold;
+    font-size: 30rpx;
+    color: #333;
+}
+
+.pattern-info {
+    padding: 40rpx;
+}
+
+.pattern-info > .photo {
+    width: 32%;
+    margin-right: 25rpx;
+    position: relative;
+}
+
+.pattern-info > .photo image {
+    width: 100%;
+    height: 150rpx;
+    opacity: .5;
+}
+
+.pattern-info > .photo > .chosenBg {
+    width: 100%;
+    height: 150rpx;
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: none;
+}
+
+.pattern-info > .photo.active image{
+    opacity: 1;
+}
+
+.pattern-info > .photo.active > .chosenBg {
+    display: block;
+}
+
+.custom-info {
+    color: #333;
+    font-size: 26rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    padding:0 40rpx 0 50rpx;
+    margin: 0 40rpx;
+    border: 1rpx solid #dbdbdb;
+    border-radius: 70rpx;
+    margin-top: 30rpx;
+    margin-bottom: 30rpx;
+}
+
+.custon-content {
+    width: 70%;
+}
+
+.custon-content  input {
+    padding-left: 10rpx;
+    width: 300rpx;
+    height: 100%;
+    line-height: 80rpx;
+}
+
+.price-container {
+    padding: 40rpx;
+    margin-bottom: 100rpx;
+}
+
+.price-container > .price-info {
+    display: flex;
+    margin-bottom: 10rpx;
+    padding:0 36rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    border: 1rpx solid #dbdbdb;
+    border-radius: 50rpx;
+    color: #333;
+    font-size: 26rpx;
+}
+
+.price-container > .price-info.current, .custom-info.current {
+    border-color: #44bf3b;
+}
+
+.price-container > .price-info > .content {
+    width: 70%;
+}
+
+.numCount {
+    width: 30%;
+    display: flex;
+}
+
+.numCount .icon-operation {
+    border-radius: 50%;
+    width: 45rpx;
+    height: 45rpx;
+    text-align: center;
+    line-height: 38rpx;
+    font-size: 45rpx;
+    font-weight: bold;
+    margin-top: 18rpx;
+}
+
+.numCount .icon-operation image {
+    width: 100%;
+    height: 100%;
+}
+
+.numCount .minus {
+    color: #A4A4A4;
+}
+
+.numCount .plus {
+    color: #44bf3b;
+}
+
+.numCount .num {
+    text-align: center;
+    width: 50%;
+    color: #44bf3b;
+}
+
+.numCount .num > input {
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+    line-height: 80rpx;
+}
+
+.cart-info {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    height: 98rpx;
+    background-color: #fff;
+    padding: 20rpx 40rpx; 
+    border-top: 1rpx solid #ccc;
+}
+
+.cart-info > .total-num {
+    display: block;
+    font-size: 26rpx;
+    color: #666;
+    margin-top: 10rpx;
+}
+
+.cart-info > .total-price {
+    color: #f66009;
+}
+
+.cart-info > .btn-pay {
+    width: 270rpx;
+    height: 80rpx;
+    float: right;
+    margin-right: 80rpx;
+    margin-top: -35rpx;
+    border-radius: 80rpx;
+    text-align: center;
+    line-height: 80rpx;
+    border: 0;
+    background-color: #44bf3b;
+    color: #fff;
+}
+
+.btn-disable {
+    opacity: .5 !important;
+}

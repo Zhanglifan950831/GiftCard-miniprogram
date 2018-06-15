@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "接收礼品卡",
+    "usingComponents": {
+      "phone-auth-modal": "/components/phoneAuthModal/index"
+    }
+}
