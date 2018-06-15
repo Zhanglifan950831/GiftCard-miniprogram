@@ -294,21 +294,21 @@ var UnifiedOrder = function(prepayParam, sign) {
  * @param  {[Object]} passport  [登录信息]
  */
 var createGiftCardOrder = function(orderInfo, passport) {
-  var _orderInfo = orderInfo.orderData;
-  var cardValue = orderInfo.orderData.sku_total_price / (orderInfo.orderData.buy_count * 100);
-  HttpService.POST(API_CONFIG.API_ORDER_CREATE, orderInfo.orderData).then(info => {
+  var _orderData = orderInfo.orderData;
+  var cardValue = _orderData.sku_total_price / (_orderData.buy_count * 100);
+  HttpService.POST(API_CONFIG.API_ORDER_CREATE, _orderData).then(info => {
     if (info.code == 0) {
       var orderId = info.data.order_id;
       
       var paymentParam = {
         orderId,appId,partnerId,cardValue,
         poster: orderInfo.poster,
-        cardNum: _orderInfo.buy_count
+        cardNum: _orderData.buy_count
       };
       goPayment(paymentParam, passport);
     } else if (info.code == 310002) {
-      delete _orderInfo.skey;
-      delete _orderInfo.uid;
+      delete _orderData.skey;
+      delete _orderData.uid;
       wx.setStorageSync("orderInfo", orderInfo);
       login(createOrderWithLogin);
     } else {
