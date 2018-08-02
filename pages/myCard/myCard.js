@@ -31,17 +31,64 @@ Page({
     totalBalance: 0,      // 总余额
     isShowPayCode: false, // 是否显示支付码
     iconEye: "/images/yc.png",
-    aviableCardTotal: 0   // 可用卡总数
+    aviableCardTotal: 0,   // 可用卡总数
+    isShowUserAuthModal: false, // 是否显示用户授权模态框
+    isShowPhoneAuthModal: false,  // 是否显示手机号授权模态框
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let passport = Util.checkLogin();
+    /**
+     * 判断是否展示支付码
+     * @param  {[type]} options.isShowPayCode [description]
+     */
+    console.log(options);
+    if (options.isShowPayCode == 1) {
+      this.showPayCode();
+    }
+    let _this = this;
+    wx.getSetting({
+      success(res) {
+        let isShowUserAuthModal = !res.authSetting['scope.userInfo'];
+        if (!isShowUserAuthModal) {
+          let passport = Util.checkLogin();
+          /** 用户未登录则登录,否则直接获取信息 */
+          if (!passport) {
+            Util.login(_this.getInfo);
+          } else {
+            _this.getInfo(passport)
+          }
+        };
+        _this.setData({
+          isShowUserAuthModal
+        });
+      }
+    })
+  },
+
+  getInfo(passport) {
+    /** 如果是触发事件类型 */
+    if (passport.type) {
+      let detail = passport.detail;
+      /** 触发事件传递类型是登录 */
+      if (detail.type == "login") {
+        return Util.login(this.getInfo);
+      } else if (detail.type == "register") { /* 触发事件传递类型是注册 */
+        return Util.register(this.getInfo, detail.encryptedMobile, detail.iv4Mobile)
+      }
+    };
+    /** 如果是需要注册 */
+    if (passport.isNeedRegister) {
+      this.setData({
+        isShowPhoneAuthModal: true
+      });
+      return console.log("用户需要注册");
+    }
     this.cardListQuery(passport);
     this.queryBanlance(passport);
-    this.getAviableCardTotal(passport);
+    this.getAviableCardTotal(passport); 
   },
 
   /**
@@ -71,7 +118,6 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    
   },
 
   /**
@@ -104,9 +150,7 @@ Page({
       historyCardList: []
     });
     let passport = Util.checkLogin();
-    this.getAviableCardTotal(passport);
-    this.cardListQuery(passport);
-    this.queryBanlance(passport);
+    this.getInfo(passport);
     wx.stopPullDownRefresh();
   },
 
@@ -116,7 +160,7 @@ Page({
   onReachBottom: function () {
     
     let currentPage = this.data.start;
-    if (this.data.historyTotalSum > this.data.historyCardList.length) {
+    if (this.data.cardTotalSum > this.data.cardList.length || this.data.historyTotalSum > this.data.historyCardList.length) {
       wx.showLoading({  
         title: '玩命加载中',  
       });
@@ -205,30 +249,32 @@ Page({
         if (item.updateDatetime) {
           cardList[idx].updateDatetime = item.updateDatetime.replace(/-/g,"/");
         }
-          /**
-           * 卡状态文字
-           * @type {String}
-           */
-          var statusText = "";
-          switch(item.userStatus) {
-            case "01" : statusText = "已激活";
-                        break;
-            case "02" : statusText = "已充值";
-                        break;
-            case "03" : statusText = "赠送中";
-                        break;
-            case "04" : statusText = "已赠送";
-                        break;          
-            case "05" : statusText = "已失效";
-                        break;
-            case "06" : statusText = "已退款";
-                        break;
-            case "10" : statusText = "已绑定";
-                        break;
-            default : break;
-          }
-          cardList[idx].statusText = statusText;
-          // cardList[idx].dateInfo = Util.formatTime(new Date(item.createDatetime));
+        /**
+         * 卡状态文字
+         * @type {String}
+         */
+        var statusText = "";
+        switch(item.userStatus) {
+          case "01" : statusText = "已激活";
+                      break;
+          case "02" : statusText = "已充值";
+                      break;
+          case "03" : statusText = "赠送中";
+                      break;
+          case "04" : statusText = "已赠送";
+                      break;          
+          case "05" : statusText = "已失效";
+                      break;
+          case "06" : statusText = "已退款";
+                      break;
+          case "10" : statusText = "已绑定";
+                      break;
+          case "11" : statusText = "已消费";
+                      break;
+          default : break;
+        }
+        cardList[idx].statusText = statusText;
+        // cardList[idx].dateInfo = Util.formatTime(new Date(item.createDatetime));
       });
       return cardList;
   },
@@ -237,6 +283,10 @@ Page({
    */
   showPayCode: function () {
     let passport = Util.checkLogin();
+    this.payCodeRequest(passport);
+  },
+
+  payCodeRequest(passport) {
     HttpService.GET(API_CONFIG.API_PAY_CODE, {
       uid: passport.uid,
       skey: passport.skey,
@@ -245,16 +295,21 @@ Page({
       _platform_num
     }).then(info => {
         if (info.code == 1) {
-          let payCode = info.data.payCode;
+          let payCode = info.data.payCode + "";
+          let lLen = Math.ceil((payCode.length - 4) / 2);
+          let rLen = payCode.length - 4 - lLen;
+          let reg = new RegExp(`^(\\w{${lLen}})\\w{4}(\\w{${rLen}})$`);
           this.setData({
             showModalStatus: true,
             isShowPayCode: false,
             iconEye: "/images/yc.png",
-            payCodeStr: payCode.replace(/^(\d{7})\d{4}(\d{7})$/,"$1****$2"),
+            payCodeStr: payCode.replace(reg,"$1****$2"),
             payCode: payCode
           });
           COMMON_CODE.barcode(payCode, "bacCanvas", 410, 150);
           COMMON_CODE.qrcode(payCode, "qrcCanvas", 375, 375);
+        }  else if(info.code == 8001) {
+            Util.login(this.payCodeRequest);
         } else {
           wx.showModal({
             title: '错误提示',
@@ -271,10 +326,14 @@ Page({
   toggleEntireCode() {
     let _isShowPayCode = this.data.isShowPayCode;
     let iconEye = "";
+    let payCode = this.data.payCode;
     let payCodeStr = this.data.payCode;
     if (_isShowPayCode) {
+      let lLen = Math.ceil((payCode.length - 4) / 2);
+      let rLen = payCode.length - 4 - lLen;
+      let reg = new RegExp(`^(\\w{${lLen}})\\w{4}(\\w{${rLen}})$`);
       iconEye = "/images/yc.png";
-      payCodeStr = payCodeStr.replace(/^(\d{7})\d{4}(\d{7})$/,"$1****$2");
+      payCodeStr = payCodeStr.replace(reg, "$1****$2");
     } else {
       iconEye = "/images/xs.png";
     }
@@ -348,7 +407,7 @@ Page({
       });
     } else {
       wx.showToast({
-        title:"该礼品卡不可赠送",
+        title: cardInfo.canGiveOutMsg,
         icon: "none"
       });
     }
@@ -372,7 +431,8 @@ Page({
     let _index = e.currentTarget.dataset.index;
     let passport = Util.checkLogin();
     this.setData({
-      useFlag: _index
+        start:1,
+        useFlag: _index
     });
     this.cardListQuery(passport);
   }

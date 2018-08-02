@@ -95,23 +95,26 @@ page {
 .card-container .card-content {
     border-radius: 20rpx;
     overflow: hidden;
-    box-shadow: 0 10rpx 15rpx #999;
+    /*box-shadow: 0 10rpx 15rpx #999;*/
 }
 
 .card-container .card-item {
-    height: 180rpx;
+    height: 300rpx;
     overflow: hidden;
     position: relative;
-    border-radius: 20rpx 20rpx 0 0;
+    /*border-radius: 20rpx 20rpx 0 0;*/
+    border-radius: 20rpx;
+    border: 1rpx solid #dbdbdb;
+    padding: 20rpx;
 }
 
 .card-container .card-item:not(:first-child) {
-    margin-top: -15rpx;
-    box-shadow: 0 -10rpx 30rpx rgba(0,0,0,.35);
+    margin-top: 20rpx;
+    /*box-shadow: 0 -10rpx 30rpx rgba(0,0,0,.35);*/
 }
 
 .card-container .card-item:last-child {
-    border-radius: 20rpx;
+    /*border-radius: 20rpx;*/
 }
 
 .card-container .card-item.chosen {
@@ -119,7 +122,9 @@ page {
 }
 
 .card-container .pic {
-    height: 300rpx;
+    height: 240rpx;
+    overflow: hidden;
+    border-radius: 20rpx;
     position: relative;
 }
 
@@ -140,17 +145,18 @@ page {
     position: absolute;
     top: 0;
     right: 20rpx;
-}
+} 
 
 .card-item .operate {
     position: absolute;
-    width: 100%;
-    height: 120rpx;
-    box-sizing: border-box;
-    padding: 30rpx 50rpx;
-    display: flex;
+    left: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,.45);
+    width: 100%;
+    height: 80rpx;
+    box-sizing: border-box;
+    padding: 22rpx 30rpx;
+    display: flex;
+    background-color: #fff;
 }
 
 .card-item  .operate > view{
@@ -159,13 +165,26 @@ page {
     width: 48%;
     height: 60rpx;
     font-size: 28rpx;
-    line-height: 60rpx;
-    text-align: center;
     border-radius: 40rpx; 
 }
 
 .card-item  .operate > view:first-child {
     margin-right: 20rpx;
+    color: #333;
+}
+
+.card-item  .operate > view:last-child {
+    text-align: right;
+}
+
+.card-item  .operate > view:last-child > text {
+    padding-left: 20rpx;
+    display: inline-block;
+}
+
+.card-item  .operate > view:last-child > text:first-child {
+    padding-right: 20rpx;
+    border-right: 2rpx solid #44bf3b;
 }
 
 .history-enrty {

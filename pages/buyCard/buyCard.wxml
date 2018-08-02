@@ -1,3 +1,4 @@
+<import src="../../wxParse/wxParse.wxml"/> 
 <view class="container">
     <view class="card-poster">
         <image src="{{poster}}"></image>
@@ -33,7 +34,7 @@
         <text class="title">选择卡面值</text>
         <view class="price-container">
             <view class="price-info {{item.isCurrent ? 'current': ''}}" catchtap="redirect" wx:for="{{priceList}}" wx:key="unique" data-skuid="{{item.skuid}}">
-                <view class="content">{{item.price}}</view>
+                <view class="content">{{item.price}} 元</view>
                 <view class="numCount">
                     <view bindtap="decreaseCount" data-index="{{index}}" class="minus icon-operation {{item.num <= 0 ? 'hidden':''}}"><image src="/images/icon_minus_gray.png"/></view>
                     <!-- <view class="num {{item.num <= 0 ? 'hidden':''}}">{{item.num}}</view> -->
@@ -43,6 +44,13 @@
                     <view wx:if="{{item.isCurrent}}" bindtap="addCount" data-index="{{index}}" class="plus icon-operation"><image src="/images/icon_plus.png"/></view>
                 </view>
             </view>
+        </view>
+    </view>
+    <!-- 卡详情说明 -->
+    <view class="card-detail" wx:if="{{skuDescription}}">
+        <view class="title">卡详情说明</view>
+        <view class="detail-container">
+            <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
         </view>
     </view>
     <!-- 购卡信息部分 -->

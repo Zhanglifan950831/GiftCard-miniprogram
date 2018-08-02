@@ -3,7 +3,8 @@ const app = getApp();
 import Util from "../../utils/util";
 import md5 from "../../utils/lib/md5.min";
 import HttpService from "../../utils/httpService";
-import API_CONFIG from "../../utils/apiConfig"
+import API_CONFIG from "../../utils/apiConfig";
+import WxParse from "../../wxParse/wxParse";
 
 const appId = app.globalData.appId;
 const _platform_num = app.globalData._platform_num;
@@ -37,6 +38,7 @@ Page({
     currentEntityId: 8002,    // 当前实体ID
     currentStoreId: 8000,      // 当前门店ID
     disablePay: true,
+    skuDescription: "",
     isShowPhoneAuthModal: false
   },
 
@@ -78,11 +80,19 @@ Page({
                 })
               }
           });
+          WxParse.wxParse('article', 'html', detailInfo.base_info.sku_description, this);
+          // 排序价格列表
+          if (_priceList.length > 1) {
+            _priceList.sort((a,b) => {
+              return a.price - b.price;
+            });
+          }
           this.setData({
             maxBuyCount,
             maxLength,
             poster: detailInfo.extra_info.photo[0],
-            priceList: _priceList
+            priceList: _priceList,
+            skuDescription: detailInfo.base_info.sku_description
           });
           this.getTotalNum();
           this.getTotalPrice();
@@ -118,18 +128,19 @@ Page({
    */
   addCount: function (e) {
     /** 获取当前操作价格列表的下标 */
+    let maxBuyCount = this.data.maxBuyCount;
     let _index = e.currentTarget.dataset.index;
     if (_index < 0) {
       if (this.data.customPrice) {
         let _custonCount = this.data.customCount;
         this.setData({
-          customCount: _custonCount +1
+          customCount: _custonCount >= maxBuyCount ? maxBuyCount : _custonCount +1
         });
       }
     } else {
       let priceList = this.data.priceList;
       let _num = priceList[_index].num;
-      priceList[_index].num = _num + 1;
+      priceList[_index].num = _num >= maxBuyCount ? maxBuyCount: _num + 1;
       this.setData({
         priceList: priceList
       }); 
@@ -251,7 +262,7 @@ Page({
         }
     } else {
       wx.showToast({
-        title: "只能输入1-1000的整数",
+        title: `只能输入1-${this.data.maxBuyCount}的整数`,
         icon: "none"
       });
       if (_index >= 0) {
@@ -282,6 +293,7 @@ Page({
     wx.setStorageSync("userInfo", e.detail.userInfo);
     
     let passport = Util.checkLogin();
+    app.globalData.callback = this.payOperate;
     if (passport) {
       this.payOperate(passport);
       /*wx.navigateTo({
@@ -299,6 +311,18 @@ Page({
     let orderInfo = {
       poster: this.data.poster
     };
+    /*var skuList = [];
+    this.data.priceList.filter(item => item.num > 0).forEach(item => {
+      skuList.push({
+        skuCode: item.skuid,
+        cardValue: item.price,
+        num: item.num,
+        amount: item.num * item.price 
+      });
+    })
+    console.log(skuList);
+    return false;*/
+    
     /**
      * [orderData 下单数据]
      * @type {Object}
@@ -315,18 +339,6 @@ Page({
       storeId: 8000,
       _platform_num
     };
-    /*orderData = {
-      sku_id: 105,
-      buy_count: this.data.totalNum,
-      source: 14,
-      entity_id: 8002,
-      channel_id: 1,
-      partner_id: partnerId,
-      total_pay: 1 * this.data.totalNum,
-      sku_total_price: 1 * this.data.totalNum,
-      storeId: 8000,
-      _platform_num,
-    };*/
     orderInfo.orderData = orderData;
     if (passport.isNeedRegister) {
         console.log("需要注册");
@@ -348,7 +360,6 @@ Page({
       /** 用户已登录情况下，给下单数据增加skey和uid属性 */
       orderData.skey = passport.skey;
       orderData.uid = passport.uid;
-      console.log(orderData);
       console.log(orderInfo);
       /**
        * 创建订单

@@ -49,15 +49,21 @@ App({
             console.log("----------------------------------------");
         }
     }
+    if (opt && opt.referrerInfo) {
+      const {uid, skey} = opt.referrerInfo.extraData;
+      wx.setStorageSync("passport", {uid, skey});
+    }
   },
   globalData: {
     userInfo: null,
     appId: "wx4553b7a1465a6c9d",
     AppSecret:"694247db6dd618747491883d45f28cab",
     _platform_num: 6,
+    wxPubId: 1,
     key: "ab02a3f4a1d14fc8b997c3377be0379b",
     mch_id: "1244007002",
     sub_appid: "wx39eef238730a2c7e",
-    sub_mch_id: "1494460862"
+    sub_mch_id: "1494460862",
+    callback: null
   }
 })

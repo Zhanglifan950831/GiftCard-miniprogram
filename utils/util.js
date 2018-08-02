@@ -1,10 +1,12 @@
 import md5 from "./lib/md5.min";
+import sha1 from "./lib/sha1.min";
 import HttpService from "./httpService";
 import API_CONFIG from "../utils/apiConfig"
 
 const app = getApp();
 const appId = app.globalData.appId;
 const _platform_num = app.globalData._platform_num;
+const wxPubId = app.globalData.wxPubId;
 const partnerId = 507;
 
 const formatTime = date => {
@@ -116,7 +118,6 @@ var login = function(success = () => {}) {
           appid: appId
       };
       HttpService.POST(API_CONFIG.API_USER_LOGIN, loginParam).then(info => {
-        console.log(info);
         if (info.errno == 0) {
           const {
             skey,
@@ -181,10 +182,7 @@ var loginWithOpenId = function(loginParam, openId, success = () =>{}) {
                   uid
                 },
                 success: () => {
-                  success({
-                    skey,
-                    uid
-                  });
+                  success({skey,uid});
                 }
               });
           } else if (info.errno == 3520) {  // 用户尚未注册
@@ -241,10 +239,7 @@ var register = function(success = () => {}, encryptedMobile, iv4Mobile) {
               uid
             },
             success: () => {
-              success({
-                skey,
-                uid
-              })
+              success({skey,uid});
             }
           });
         } else {
@@ -382,6 +377,10 @@ var goPayment = function(paymentParam, passport) {
  * @param  {[Object]} passport [description]
  */
 var paymentWithLogin = passport => {
+  if (passport.isNeedRegister) {
+    let callback = app.globalData.callback;
+    return callback(passport);
+  }
   let paymentParam = wx.getStorageSync("paymentParam");
   goPayment(paymentParam, passport);
   wx.removeStorageSync("paymentParam");
@@ -409,6 +408,69 @@ var throttle = function(fn, gapTime) {
     }
 }
 
+/**
+ * [wxAddCard 微信添加到卡包]
+ * @param  {[Array]}   cardList [卡列表]
+ * @param  {Function} success  [成功的回调]
+ */
+var wxAddCard = function (cardList, success = () => {}) {
+    HttpService.GET(API_CONFIG.API_QUERY_APITICKET, {
+      _platform_num,
+      wxPubId,
+      type: "wx_card"
+    }).then(info => {
+        if (info.code == 0 && info.content.result) {
+          let apiTicket = info.content.result;
+          let openid = wx.getStorageSync("openid"),
+              codeList = [],
+              _cardList = [];
+              
+          cardList.forEach((item, idx) => {
+              let timeStamp = getCurrentTimeStamp(),
+                  cardId = item.cardId,
+                  code = item.code,
+                  nonce_str = getNonceStr();
+              let signArr = [timeStamp.toString(), code.toString(), cardId, nonce_str, openid, apiTicket];
+              signArr.sort((a, b) => {
+                return a > b;
+              });
+              
+              let cardExtObj = {
+                code,
+                openid,
+                timestamp: timeStamp,
+                nonce_str,
+                signature: sha1(signArr.join(""))
+              };
+              
+              _cardList.push({
+                cardId,
+                cardExt: JSON.stringify(cardExtObj)
+              });
+              codeList.push(code);
+          });
+          console.log(_cardList);
+          wx.addCard({
+            cardList: _cardList,
+            success: res => {
+              console.log(res);
+              success();
+              HttpService.GET(API_CONFIG.API_UPDATE_WECHAT_CARD, {
+                cardId: cardList[0].cardId,
+                code: codeList,
+                _platform_num
+              }).then(info => {
+                console.log("更新不定额卡的请求结果：" + JSON.stringify(info));
+              });
+            },
+            fail: res => {
+              console.log("添加卡包失败返回信息：" + JSON.stringify(res));
+            }
+          }) 
+        };
+    });
+}
+
 module.exports = {
   formatTime: formatTime,
   getNonceStr: getNonceStr,
@@ -419,5 +481,6 @@ module.exports = {
   register: register,
   UnifiedOrder: UnifiedOrder,
   createGiftCardOrder: createGiftCardOrder,
-  throttle: throttle
+  throttle: throttle,
+  wxAddCard: wxAddCard
 }

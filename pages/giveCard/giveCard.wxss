@@ -72,7 +72,8 @@
     padding: 20rpx 40rpx;
     position:fixed;
     width:90%;
-    bottom: 20rpx
+    bottom: 30rpx;
+    display: flex;
 }
 
 .btn-sendCard button {
@@ -80,11 +81,27 @@
     background-color: #44bf3b;
     color: #fff;
     text-align: center;
-    width: 100%;
+    width: 48%;
     height: 80rpx;
     line-height: 80rpx;
     border-radius: 80rpx;
     font-size: 35rpx;
+    border: 1rpx solid #44bf3b;
+}
+
+.btn-sendCard button:first-child {
+    margin-right: 20rpx;
+    background-color: #fff;
+    color: #44bf3b;
+}
+
+.tip {
+    position: fixed;
+    bottom: 10rpx;
+    width: 100%;
+    text-align: center;
+    color: #aaa;
+    font-size: 24rpx;
 }
 
 .share-modal {

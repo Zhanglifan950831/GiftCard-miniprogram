@@ -21,18 +21,21 @@
         <!-- 卡列表部分 -->
         <view class="card-container">
             <view class="card-content">
-                <view class="card-item {{item.selected ? 'chosen': ''}}" wx:for="{{cardList}}" wx:key="unique" data-index="{{index}}" bindtap="toggleExtendCard">
+                <view class="card-item" wx:for="{{cardList}}" wx:key="unique" data-index="{{index}}">
                     <view class="pic">
                         <image src="{{item.modelPic}}"/>
-                        <view class="operate">
-                            <view catchtap="goSendCard" data-index="{{index}}">赠送好友</view>
-                            <view catchtap="goToDetail" data-serial-no="{{item.serialNo}}">查看详情</view>
+                    </view>
+                    <view class="operate">
+                        <view>{{item.balance}}元 x{{item.cardNum}}张</view>
+                        <view>
+                            <text catchtap="goSendCard" data-index="{{index}}">赠送好友</text>
+                            <text catchtap="goToDetail" data-serial-no="{{item.serialNo}}">查看详情</text>
                         </view>
                     </view>
-                    <view class="face-info">
-                        {{item.cardValue}}元
+                    <!-- <view class="face-info">
+                        {{item.balance}}元
                         <view>x{{item.cardNum}}张</view>
-                    </view>
+                    </view> -->
                 </view>
             </view>
         </view>
@@ -77,3 +80,5 @@
         <view class="balance-info">礼品卡余额￥{{totalBalance}}</view>
     </view>
 </view>
+<user-auth-modal is-show="{{isShowUserAuthModal}}" module="myCard" bind:myEvent="getInfo"></user-auth-modal>
+<phone-auth-modal is-show="{{isShowPhoneAuthModal}}" module="myCard" bind:myEvent="getInfo"></phone-auth-modal>

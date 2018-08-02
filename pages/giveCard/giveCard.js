@@ -22,20 +22,37 @@ Page({
     count: 1,
     remark: "",
     sendData: {},       // 赠送数据
-    isShowModal: false  // 是否显示确认模态框
+    isShowModal: false,  // 是否显示确认模态框
+    cardList: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let passport =  Util.checkLogin();
     let giveData = JSON.parse(options.data);
     let {cardValue, cardNum, isBatch, modelPic} = giveData;
+    let cardList = [];
     this.setData({
       cardValue, cardNum, isBatch, modelPic
     });
     if (giveData.isBatch) {
       let serialNo = giveData.serialNo;
+      HttpService.GET(API_CONFIG.API_CARD_DETAIL, {
+        serialNo, _platform_num,
+        ...passport
+      }).then(info => {
+        if (info.code == 1) {
+          let cardId = info.data.wechatCardId;
+          info.data.cardNoList.forEach((item, idx) => {
+            if (item.wechatPackage == 0) {
+               cardList.push({code: item.cardNo, cardId});
+            }
+          });
+          this.setData({cardList, cardNum: cardList.length})
+        }
+      });
       this.setData({
         serialNo
       });
@@ -44,8 +61,23 @@ Page({
       this.setData({
         orderId
       }); 
+      HttpService.GET(API_CONFIG.API_QUERYCARD_BYORDERNO, {
+        orderNo: orderId,
+        partnerId: "07",
+        ...passport,
+        _platform_num 
+      }).then(info => {
+        if (info.code == 1) {
+          info.data.forEach(item => {
+            cardList.push({code: item.cardNo,cardId: item.wechatCardId});
+            this.setData({cardList});
+          })
+        }
+      })
     }
-    
+    console.log(">>>可添加至卡包的cardList为：");
+    console.log(cardList);
+    console.log(">>>--------------------------");
     wx.hideShareMenu();
   },
 
@@ -139,9 +171,14 @@ Page({
   },
   sendCard: function () {
     let passport = Util.checkLogin();
+    this.sendCardOperate(passport);
+  },
+
+  sendCardOperate(passport) {
     let userInfo = wx.getStorageSync("userInfo");
     var _data = {
       passport,
+      fromUid: passport.uid,
       cardValue: this.data.cardValue,
       nickName: encodeURIComponent(userInfo.nickName),
       awardKey: ""
@@ -151,7 +188,7 @@ Page({
         return wx.showModal({
               title: '提示',
               showCancel: false,
-              content: "赠送数量不得超过您已有卡数量"
+              content: "赠送数量不得超过您可赠送卡数量"
             });
     }
 
@@ -177,6 +214,8 @@ Page({
               sendData: _data,
               isShowModal: true
             });
+        } else if (info.code == 1020) {
+            Util.login(this.sendCardOperate);
         } else {
             wx.showModal({
                 title: '错误提示',
@@ -211,5 +250,26 @@ Page({
     this.setData({
       isShowModal: false
     });
+  },
+  /**
+   * [addCard 添加到微信卡包]
+   */
+  addCard() {
+    let _cardList = this.data.cardList;
+    /** 过滤cardId为undefined的数组 */
+    let cardList = _cardList.filter(item => !!item.cardId);
+    if (cardList.length > 0) {
+      Util.wxAddCard(cardList, () => {
+        console.log("领取成功");
+        wx.redirectTo({
+          url: '/pages/myCard/myCard',
+        });
+      });
+    } else {
+      wx.showToast({
+                    title: "抱歉，该礼品卡尚不能添加至卡包",
+                    icon: "none"
+                  });
+    }
   }
 })

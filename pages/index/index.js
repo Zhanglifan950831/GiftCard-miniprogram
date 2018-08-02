@@ -77,9 +77,16 @@ Page({
    * @param  {[type]} e [event对象]
    */
   swiperChange: function (e) {
-    this.setData({  
-        swiperCurrent: e.detail.current  
-    })  
+    let _current = e.detail.current;
+    if (e.detail.source) {
+      this.setData({
+        swiperCurrent: _current
+      });
+    } else {
+      this.setData({
+        swiperCurrent: 0
+      });
+    }
   },
   /**
    * 前往购卡页面
@@ -123,6 +130,22 @@ Page({
     
     if (passport) {
       console.log("已登录");
+      // 测试开始
+      /*let sendData = {
+        awardKey: "6-35ff81a0-9e2d-4287-bf6c-6fbacb2d2d38",
+        nickName: "侧室1",
+        cardValue: 0.01,
+        fromUid: 1000239448,
+        passport: {
+          uid: 1000239448,
+          skey: "HX59C0BA5E"
+        }
+      }
+      wx.navigateTo({
+        url: "../receiveCard/receiveCard?sendDataStr=" + JSON.stringify(sendData)
+      });
+      return;*/
+      // 测试结束
       wx.navigateTo({
         url: "../myCard/myCard"
       });

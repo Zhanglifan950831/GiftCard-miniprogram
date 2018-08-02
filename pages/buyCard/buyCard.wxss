@@ -4,7 +4,7 @@
 }
 
 .card-poster image {
-    height: 400rpx;
+    height: 395rpx;
     width: 100%;
     border-radius: 32rpx;
     box-shadow: 0 10rpx 10rpx #aaa; 
@@ -18,7 +18,7 @@
     display: flex;
 }
 
-.card-pattern > .title, .card-face > .title, .custom-face > .title {
+.card-pattern > .title, .card-face > .title, .custom-face > .title, .card-detail > .title{
     border-left: 10rpx solid #44bf3b;
     padding: 10rpx 50rpx;
     padding-left: 20rpx;
@@ -77,6 +77,7 @@
 
 .custon-content {
     width: 70%;
+    height: 100%;
 }
 
 .custon-content  input {
@@ -88,7 +89,6 @@
 
 .price-container {
     padding: 40rpx;
-    margin-bottom: 100rpx;
 }
 
 .price-container > .price-info {
@@ -143,15 +143,34 @@
 .numCount .num {
     text-align: center;
     width: 50%;
+    height: 80rpx;
     color: #44bf3b;
 }
 
 .numCount .num > input {
     width: 100%;
-    overflow: hidden;
     height: 100%;
     line-height: 80rpx;
 }
+
+.card-detail {
+    margin-bottom: 160rpx;
+}
+
+.detail-container {
+    padding: 0 40rpx;
+    color: #333;
+    font-size: 26rpx;
+}
+
+.detail-container > view:first-child {
+    margin-bottom: 10rpx;
+}
+
+.detail-container > view image {
+    width: 100% !important;
+}
+
 
 .cart-info {
     width: 100%;

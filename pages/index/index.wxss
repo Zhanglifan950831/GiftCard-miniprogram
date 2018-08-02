@@ -5,7 +5,7 @@
     width: 100%;
     border-top: 1rpx solid #dbdbdb;
     margin-bottom: 50rpx;
-    padding-top: 10rpx;
+    /*padding-top: 10rpx;*/
     position: relative;
 }
 
@@ -15,7 +15,6 @@
 
 .banner swiper-item {
     box-sizing: border-box;
-    padding: 0 18rpx;
 }
 
 .banner > swiper image {

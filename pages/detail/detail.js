@@ -12,7 +12,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    cardDetail: {}
+    cardDetail: {},
+    cardNoList: [],
+    cardList: []
   },
 
   /**
@@ -30,9 +32,22 @@ Page({
         /** 替换日期"-"为"/" */
         cardDetail.buyDatetime = cardDetail.buyDatetime.replace(/-/g,"/");
         cardDetail.invalidDatetime = cardDetail.invalidDatetime.replace(/-/g,"/");
-        this.setData({
-          cardDetail
+        let cardNoList = [];
+        cardDetail.cardNoList.forEach((item, idx) => {
+          let selected = false;
+          if (cardDetail.wechatCardId && item.wechatPackage == 0 && !cardNoList.find(item => item.selected)) {
+            selected = true;
+          };
+          cardNoList.push({
+            ...item,
+            selected
+          });
         });
+        this.setData({
+          cardDetail,
+          cardNoList
+        });
+        this.getCardList(cardNoList);
       } else {
         wx.showToast({
           title: info.msg,
@@ -82,5 +97,81 @@ Page({
    */
   onReachBottom: function () {
     
+  },
+  /**
+   * [toggleChoose 切换选择]
+   * @param  {[Object]} e [event对象]
+   */
+  toggleChoose(e) {
+    if (!this.data.cardDetail.useFlag) {
+      return false
+    }
+    let cardId = this.data.cardDetail.wechatCardId;
+    if (!cardId) {
+        return wx.showToast({title: "抱歉，该礼品卡尚不能添加至卡包",icon: "none"});
+    };
+    let _index = e.currentTarget.dataset.index;
+    let cardNoList = this.data.cardNoList;
+    cardNoList[_index].selected = !cardNoList[_index].selected;
+    this.getCardList(cardNoList);
+  },
+
+  /**
+   * [getCardList 获取可添加至卡包的cardList]
+   * @param  {[Array]} cardNoList [卡号列表]
+   */
+  getCardList(cardNoList) {
+    if (!cardNoList.find(item => item.selected)) {
+      return;
+    };
+    let cardId = this.data.cardDetail.wechatCardId,
+        cardList = [];
+    
+    cardNoList.forEach((item,idx) => {
+        if (item.selected) {
+          if (item.wechatPackage == 0) {
+            cardId && cardList.push({cardId, code: item.cardNo});
+          } else {
+            cardNoList[idx].selected = false;
+            let tipMsg = item.wechatPackage == 1 ? "该礼品卡已添加到卡包": "该礼品卡已被您从卡包删除，请从卡包里恢复";
+            return wx.showToast({
+                        title: `抱歉，${tipMsg}`,
+                        icon: "none"
+                      });
+          }
+        }
+    });
+    this.setData({
+      cardNoList, 
+      cardList
+    });
+  },
+
+  /**
+   * [addCard 添加到微信卡包]
+   */
+  addCard() {
+    let cardList = this.data.cardList,
+        cardId = this.data.cardDetail.wechatCardId;
+    if (cardList.length > 0) {
+      Util.wxAddCard(cardList, () => {
+        console.log("领取成功");
+        /*wx.showModal({
+          title: '添加成功',
+          showCancel: false,
+          content: "恭喜您添加到微信卡包成功",
+          success: res => {
+            if (res.confirm) {
+              wx.reLaunch({
+                url: "/pages/myCard/myCard"
+              });
+            }
+          }
+        });*/
+        wx.redirectTo({
+          url: '/pages/myCard/myCard',
+        });
+      });
+    }
   }
 })

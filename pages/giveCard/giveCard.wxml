@@ -5,7 +5,7 @@
     <view class="dedication">
         <view class="info">
             <view class="card-info">
-                面额: <text>￥{{cardValue}}</text>共{{cardNum}}张
+                面额: <text>￥{{cardValue}}</text>可赠送共{{cardNum}}张
             </view>
             <view class="giveCard-count">
                 赠送:
@@ -18,7 +18,11 @@
             <textarea maxlength="120" hidden="{{isShowModal}}" bindinput="getRemark" placeholder="祝心想事成，天天开心"></textarea>
         </view>
     </view>
-    <view class="btn-sendCard"><button bindtap="sendCard">赠送好友</button></view>
+    <view class="btn-sendCard">
+        <button bindtap="addCard">添加到微信卡包</button>
+        <button bindtap="sendCard">赠送好友</button>
+    </view>
+    <text wx:if="{{isBatch}}" class="tip">已加入微信卡包的卡，请从卡包转赠</text>
 
     <!-- 确认分享模态框 -->
     <view class="mask" wx:if="{{isShowModal}}" bindtap="cancelGift"></view>

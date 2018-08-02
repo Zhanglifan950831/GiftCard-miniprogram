@@ -1,4 +1,4 @@
-import {register, createGiftCardOrder} from "../../utils/util"
+import {register, createGiftCardOrder, wxAddCard} from "../../utils/util"
 import HttpService from "../../utils/httpService";
 import API_CONFIG from "../../utils/apiConfig"
 
@@ -26,6 +26,7 @@ const module_callback = {
   /** 领取卡回调 */
   receiveCard: (passport) => {
     let _receiveCardData = wx.getStorageSync("receiveCardData");
+    let cardList = wx.getStorageSync("cardList");
     _receiveCardData.toUid = passport.uid;
     _receiveCardData.uid = passport.uid;
     _receiveCardData.skey = passport.skey;
@@ -40,6 +41,7 @@ const module_callback = {
             content: "恭喜您领取成功",
             success: res => {
               if (res.confirm) {
+                cardList.length > 0 && wxAddCard(cardList);
                 wx.reLaunch({
                   url: "/pages/myCard/myCard"
                 });
@@ -53,6 +55,8 @@ const module_callback = {
           })
         }
     });
+    wx.removeStorageSync("receiveCardData");
+    wx.removeStorageSync("cardList");
   }
 }
 
@@ -70,7 +74,6 @@ Component({
   },
   data: {
     // 这里是一些组件内部数据
-
   },
   methods: {
     closeModal: function() {
@@ -83,6 +86,14 @@ Component({
       var module = this.properties.module
       this.closeModal();
       if (_info.iv && _info.encryptedData) {
+        if (module == "myCard") {
+          console.log("进入我的礼品卡触发事件");
+          return this.triggerEvent("myEvent", {
+            type: "register",
+            encryptedMobile: _info.encryptedData, 
+            iv4Mobile: _info.iv
+          })
+        };
         register(module_callback[module], _info.encryptedData, _info.iv);
       } else {
         setTimeout(function() {

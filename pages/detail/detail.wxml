@@ -3,13 +3,16 @@
         <image src="{{cardDetail.modelPic}}"/>
     </view>
 
-    <view class="detail-content">
-        <view class="item">
-            <view class="description">礼品卡号</view>
-            <view class="info-text">
-                <view wx:for="{{cardDetail.cardNoList}}" wx:key="unique">{{item}}</view>
-            </view>
+    <view class="title">礼品卡号</view>
+    <view class="card-content">
+        <view class="card-item" bindtap="toggleChoose" data-index="{{index}}" wx:for="{{cardNoList}}" wx:key="unique">
+            <view>{{item.cardNo}}</view>
+            <view class="icon" wx:if="{{cardDetail.useFlag == 1}}"><image src="/images/{{item.selected?'xzkh' : 'wxzkh'}}.png"/></view>
         </view>
+    </view>
+
+    <view class="title">卡详情</view>
+    <view class="detail-content">
         <view class="item">
             <view class="description">卡面值</view>
             <view class="info-text">￥{{cardDetail.cardValue}}</view>
@@ -28,7 +31,7 @@
         </view>
         <view class="item">
             <view class="description">有效时间</view>
-            <view class="info-text">{{cardDetail.invalidDatetime}}</view>
+            <view class="info-text">永久有效<!-- {{cardDetail.invalidDatetime}} --></view>
         </view>
         <view class="item">
             <view class="description">购卡订单</view>
@@ -39,4 +42,6 @@
             <view class="info-text">自营商品（特殊商品除外）</view>
         </view>
     </view>
+
+    <view class="btn-addCard" wx:if="{{cardDetail.useFlag == 1}}"><button bindtap="addCard" class="{{cardList.length > 0 ? 'btn-success' : ''}}">添加到微信卡包</button></view>
 </view>

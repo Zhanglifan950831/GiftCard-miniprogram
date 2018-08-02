@@ -17,10 +17,22 @@
                 <view class="from-user">来自：{{nickName}}</view>
             </view>
         </view>
+        <view class="receive-info">
+            <view class="title">已领取（{{gived}}/{{total}}）:</view>
+            <view class="receiver-content">
+                <view class="item" wx:for="{{receiverList}}" wx:key="unique">
+                    <view class="icon-head">
+                        <image src="{{item.receiverHead}}"/>
+                    </view>
+                    <view class="receiver"><text>{{item.receiverName}}</text><span>（{{item.count}}张）</span></view>
+                    <view class="date">{{item.datetime}}</view>
+                </view>
+            </view>
+        </view>
     </view>
     <view class="receive-footer">
         <button bindtap="goHome">取消</button>
-        <button open-type="getUserInfo" bindgetuserinfo="receiveCard">领取</button>
+        <button type="button" disabled="{{canReceive}}" class="{{canReceive? 'btn-disable': ''}}" open-type="getUserInfo" bindgetuserinfo="receiveCard">领取</button>
     </view>
     <phone-auth-modal is-show="{{isShowPhoneAuthModal}}" module="receiveCard"></phone-auth-modal>
 </view>
