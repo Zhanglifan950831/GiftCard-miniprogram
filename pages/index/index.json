@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "传奇卡",
-  "enablePullDownRefresh": true,
-  "usingComponents": {
-    "phone-auth-modal": "/components/phoneAuthModal/index"
-  }
-}

@@ -1,5 +1,0 @@
-{
-    "usingComponents": {
-      "phone-auth-modal": "/components/phoneAuthModal/index"
-    }
-}
