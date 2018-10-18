@@ -1,33 +1,41 @@
 <template>
-  <div class="container" @click="clickHandle('test click', $event)">
-
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
+  <div class="container">
+    <!-- 轮播图 -->
+    <div class="banner">
+      <swiper indicator-dots="true" autoplay="true" interval="3000" circular="true" duration="500">
+        <block v-for="(item, index) in bannerList" :key="index">
+          <swiper-item>
+            <img :src="item.image" class="slide-image"/>
+          </swiper-item>
+        </block>
+      </swiper>
+    </div>
+    <!-- 主体内容部分 -->
+    <div class="content" v-for="(floor, index) in cardList" :key="index">
+      <div class="title">
+        {{floor.title}}
+      </div>
+      <div class="card-info">
+        <div class="card-item" v-for="(item, idx) in floor.list[0].products" :key="idx">
+          <img :src="item.picurl" />
+          <img class="shadow" src="/static/images/wty.png"/>
+          <span v-text="item.name"></span>
+        </div>
       </div>
     </div>
-
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
   </div>
 </template>
 
 <script>
 import card from '@/components/card'
+import {API_CMS} from '../../api/config'
+import HttpService from '../../utils/httpService'
 
 export default {
   data () {
     return {
+      bannerList: [],
+      cardList: [],
       motto: 'Hello World',
       userInfo: {}
     }
@@ -38,37 +46,28 @@ export default {
   },
 
   methods: {
+    getIndexData () {
+      HttpService.GET(API_CMS).then(info => {
+        let data = info.data
+        this.bannerList = data.banner || []
+        this.cardList = data.floors
+      })
+    },
     bindViewTap () {
       const url = '../logs/main'
       wx.navigateTo({ url })
-    },
-    getUserInfo () {
-      // 调用登录接口
-      wx.login({
-        success: () => {
-          wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo
-            }
-          })
-        }
-      })
-    },
-    clickHandle (msg, ev) {
-      console.log('clickHandle:', msg, ev)
     }
   },
 
   created () {
-    // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
   },
 
   mounted () {
+    this.getIndexData()
   }
 }
 </script>
 
 <style lang="less" scoped>
-@import "./style.less";
+@import "./style";
 </style>
