@@ -1,0 +1,144 @@
+.card-poster {
+  border-top: 0.5px solid #dbdbdb;
+  padding: 10px 20px;
+  image {
+    height:200px;
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 5px 5px #aaa;
+  }
+}
+
+.title{
+  border-left: 5px solid #44bf3b;
+  padding: 5px 25px;
+  padding-left: 10px;
+  height: 30px;
+  line-height: 30px;
+  font-weight: bold;
+  font-size: 15px;
+  color: #333;
+}
+
+.flex {
+  display: flex;
+}
+
+
+.current {
+  border-color: #44bf3b !important;
+}
+
+.custom-info {
+  color: #333;
+  font-size: 13px;
+  height: 40px;
+  line-height: 40px;
+  padding:0 20px 0 25px;
+  border: .5px solid #dbdbdb;
+  border-radius: 35px;
+  margin: 15px 20px;
+  .custon-content {
+    width: 70%;
+    height: 100%;
+    input {
+      padding-left: 5px;
+      width: 150px;
+      height: 100%;
+      line-height: 40px;
+    }
+  }
+}
+
+.price-container {
+  padding: 20px;
+  > .price-info {
+    display: flex;
+    margin-bottom: 5px;
+    padding:0 18px;
+    height: 40px;
+    line-height: 40px;
+    border: .5px solid #dbdbdb;
+    border-radius: 25px;
+    color: #333;
+    font-size: 13px;
+    > .content {
+      width: 70%;
+    }
+  }
+}
+
+.numCount {
+  width: 30%;
+  display: flex;
+  .icon-operation {
+    border-radius: 50%;
+    width: 23px;
+    height: 23px;
+    text-align: center;
+    line-height: 19px;
+    font-size: 23px;
+    font-weight: bold;
+    margin-top: 9px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .num {
+    text-align: center;
+    width: 50%;
+    height: 40px;
+    color: #44bf3b;
+    > input {
+      width: 100%;
+      height: 100%;
+      line-height: 40px;
+    }
+  }
+}
+
+.card-detail {
+  margin-bottom: 80px;
+  .detail-container {
+    padding: 0 20px;
+    color: #333;
+    font-size: 13px;
+  }
+}
+
+.cart-info {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  height: 49px;
+  background-color: #fff;
+  padding: 10px 20px;
+  border-top: .5px solid #ccc;
+  .total-num {
+    display: block;
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+  }
+  > .total-price {
+    color: #f66009;
+  }
+  > .btn-pay {
+    width: 135px;
+    height: 40px;
+    float: right;
+    margin-right: 40px;
+    margin-top: -42px;
+    border-radius: 40px;
+    text-align: center;
+    line-height: 40px;
+    border: 0;
+    background-color: #44bf3b;
+    color: #fff;
+  }
+}
+
+.btn-disable {
+  opacity: .5 !important;
+}

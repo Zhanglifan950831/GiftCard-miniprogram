@@ -4330,6 +4330,11 @@ mpvue-webpack-target@^1.0.0:
   resolved "http://registry.npm.taobao.org/mpvue-webpack-target/download/mpvue-webpack-target-1.0.1.tgz#203995b7ab63f1c80fb72acf870962c549fc43c7"
   integrity sha1-IDmVt6tj8cgPtyrPhwlixUn8Q8c=
 
+mpvue-wxparse@^0.6.5:
+  version "0.6.5"
+  resolved "http://registry.npm.taobao.org/mpvue-wxparse/download/mpvue-wxparse-0.6.5.tgz#3fb1e12338d0e85dac0b97a3aa33ca8651a48aa8"
+  integrity sha1-P7HhIzjQ6F2sC5ejqjPKhlGkiqg=
+
 mpvue@^1.0.11:
   version "1.0.13"
   resolved "http://registry.npm.taobao.org/mpvue/download/mpvue-1.0.13.tgz#9d128d91f2a89bdd7507493fbeef409fe302fbd7"

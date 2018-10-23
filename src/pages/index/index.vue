@@ -16,7 +16,7 @@
         {{floor.title}}
       </div>
       <div class="card-info">
-        <div class="card-item" v-for="(item, idx) in floor.list[0].products" :key="idx">
+        <div class="card-item" @click="goBuyCard(item.skuid)" v-for="(item, idx) in floor.list[0].products" :key="idx">
           <img :src="item.picurl" />
           <img class="shadow" src="/static/images/wty.png"/>
           <span v-text="item.name"></span>
@@ -35,9 +35,7 @@ export default {
   data () {
     return {
       bannerList: [],
-      cardList: [],
-      motto: 'Hello World',
-      userInfo: {}
+      cardList: []
     }
   },
 
@@ -51,6 +49,11 @@ export default {
         let data = info.data
         this.bannerList = data.banner || []
         this.cardList = data.floors
+      })
+    },
+    goBuyCard (skuId) {
+      wx.navigateTo({
+        url: '../buyCard/main?skuId=' + skuId
       })
     },
     bindViewTap () {
