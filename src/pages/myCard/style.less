@@ -1,0 +1,190 @@
+.tab {
+  border-top: .5px solid #ccc;
+  background-color: #f7f7f7;
+  padding-bottom: 10px;
+  .tab-content {
+    height: 40px;
+    background-color: #fff;
+    display: flex;
+    color: #333;
+    font-size: 14px;
+    border-bottom: .5px solid #e7e7e7;
+    > view {
+      width: 50%;
+      text-align: center;
+      line-height: 40px;
+    }
+    span {
+      height: 40px;
+      box-sizing: border-box;
+      display: inline-block;
+      padding: 0 15px;
+      &.chosen {
+        color: #44bf3b;
+        border-bottom: 1px solid #44bf3b;
+      }
+    }
+  }
+}
+
+.aviable-content, .history-content {
+  background-color: #fff;
+}
+.amount-info {
+  position: relative;
+  .amount-content {
+    width: 80%;
+    margin:0 auto;
+    padding: 20px 0;
+    border-bottom: .5px solid #dbdbdb;
+    text-align: center;
+    color: #44bf3b;
+    font-size: 15px;
+    .fee-info {
+      font-size: 20px;
+      margin-top: 13px;
+    }
+    .count {
+      color: #9C9C9C;
+      position: absolute;
+      padding: 10px;
+      background-color: #fff;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+  .pay-code {
+    position: absolute;
+    width: 70px;
+    height: 30px;
+    right: 0;
+    top: 20px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.card-container {
+  padding: 20px;
+  position: relative;
+  margin-bottom: 60px;
+  > .card-content {
+    border-radius: 10px;
+    overflow: hidden;
+    > .card-item {
+      height: 150px;
+      overflow: hidden;
+      position: relative;
+      border-radius: 10px;
+      border: .5px solid #dbdbdb;
+      padding: 10px;
+      &:not(:first-child) {
+        margin-top: 10px;
+      }
+      .operate {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 40px;
+        box-sizing: border-box;
+        padding: 11px 15px;
+        display: flex;
+        background-color: #fff;
+        > p{
+          background-color: #fff;
+          color: #44bf3b;
+          width: 48%;
+          height: 30px;
+          font-size: 14px;
+          border-radius: 20px;
+          &:first-child {
+            margin-right: 10px;
+            color: #333;
+          }
+          &:last-child {
+            text-align: right;
+            > span {
+              padding-left: 10px;
+              display: inline-block;
+              &:first-child {
+                padding-right: 10px;
+                border-right: 1px solid #44bf3b;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .pic {
+    height: 120px;
+    overflow: hidden;
+    border-radius: 10px;
+    position: relative;
+    img {
+      width: 100%;
+      height: 200px;
+    }
+  }
+}
+
+.history-item {
+  height: 90px;
+  border-bottom: .5px solid #dedede;
+  display: flex;
+  padding: 10px;
+  box-sizing: border-box;
+  position: relative;
+  .pic {
+    width: 35%;
+    overflow: hidden;
+    border-radius: 5px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .info {
+    width: 65%;
+    padding: 0 10px;
+    font-size: 13px;
+    color: #999;
+    .card-title {
+      font-size: 14px;
+    }
+    .card-num{
+      margin-top: 5px;
+    }
+    .date-info {
+      margin-top: 13px;
+    }
+  }
+  .status-info {
+    color: #333;
+    font-size: 15px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.no_data {
+  width: 81px;
+  height: 81px;
+  color: #999;
+  font-size: 15px;
+  text-align: center;
+  margin: 100px auto 0;
+  > img {
+    width: 100%;
+    height: 100%;
+  }
+  span {
+    display: inline-block;
+    margin-top: 8px;
+  }
+}

@@ -28,4 +28,12 @@ export default {
   -webkit-transition: width 2s;
   -o-transition: width 2s;
 }
+
+button {
+  border:none;
+}
+
+button::after{
+  border:none;
+}
 </style>

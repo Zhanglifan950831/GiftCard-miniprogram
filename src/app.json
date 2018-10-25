@@ -2,6 +2,8 @@
   "pages": [
     "pages/index/main",
     "pages/buyCard/main",
+    "pages/myCard/main",
+    "pages/detail/main",
     "pages/logs/main",
     "pages/counter/main"
   ],

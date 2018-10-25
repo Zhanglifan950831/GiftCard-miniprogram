@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container bottom-spce">
     <!-- 轮播图 -->
     <div class="banner">
       <swiper indicator-dots="true" autoplay="true" interval="3000" circular="true" duration="500">
@@ -23,11 +23,13 @@
         </div>
       </div>
     </div>
+    <footer-bar :index="0"></footer-bar>
   </div>
 </template>
 
 <script>
 import card from '@/components/card'
+import footerBar from '@/components/footer-bar'
 import {API_CMS} from '../../api/config'
 import HttpService from '../../utils/httpService'
 
@@ -40,7 +42,8 @@ export default {
   },
 
   components: {
-    card
+    card,
+    footerBar
   },
 
   methods: {

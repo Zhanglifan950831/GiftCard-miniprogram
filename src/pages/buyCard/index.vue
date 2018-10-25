@@ -88,7 +88,7 @@
         if (this.customPrice) {
           _totalPrice += this.customCount * this.customPrice
         }
-        return _totalPrice
+        return _totalPrice.toFixed(2)
       }
     },
     methods: {
