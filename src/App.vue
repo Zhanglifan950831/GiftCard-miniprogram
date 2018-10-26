@@ -36,4 +36,32 @@ button {
 button::after{
   border:none;
 }
+
+/** 遮罩 */
+.mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background: #000;
+  opacity: 0.5;
+  overflow: hidden;
+}
+.layer-box {
+  border-radius: 10px;
+  background-color: #fff;
+  width: 285px;
+  box-sizing: border-box;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px 40px;
+  color: #333;
+  font-size: 14px;
+  text-align: center;
+  z-index: 10000;
+}
 </style>

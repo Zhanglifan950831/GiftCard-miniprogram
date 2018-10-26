@@ -188,3 +188,30 @@
     margin-top: 8px;
   }
 }
+
+.barcode-box {
+  border-bottom: 1.5px dashed #d8d8d8;
+  padding: 15px 0;
+  .barcode {
+    width: 100%;
+    height: 50px;
+  }
+  .payCode {
+    position: relative;
+    .icon-eye {
+      width: 16px;
+      height: 10px;
+      position: absolute;
+      right: 8px;
+      top: 0;
+      > img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+
+.qrcode {
+  margin: 20px auto;
+}

@@ -13,7 +13,7 @@
           <p class="fee-info">￥750.00</p>
           <span class="count">共计 4 张</span>
         </div>
-        <div class="pay-code"><img src="/static/images/payment_code.png"></div>
+        <div class="pay-code" @click="showPayCode()"><img src="/static/images/payment_code.png"></div>
       </div>
       <!-- 卡列表部分 -->
       <div class="card-container">
@@ -53,10 +53,27 @@
       </div>
     </div>
     <footer-bar :index="1"></footer-bar>
+    <div class="mask" v-if="showModalStatus" @click="closeModal"></div>
+    <div class="layer-box" v-if="showModalStatus">
+      <p class="text">礼品卡付款码</p>
+      <div class="barcode-box">
+        <div class="barcode">
+          <canvas canvas-id="bacCanvas" style="width: 100%;height: 50px;margin: 0 auto;"></canvas>
+        </div>
+        <div class="payCode">
+          {{payCodeStr}}
+          <view class="icon-eye" @click="toggleEntireCode"><img :src="'/static/images/' + (isShowPayCode ? 'xs' : 'yc') +'.png'" alt=""></view>
+        </div>
+      </div>
+      <div class="qrcode"><canvas style="width: 130px;height: 130px;margin: 0 auto;" canvas-id="qrcCanvas"/></div>
+      <div class="balance-info">礼品卡余额￥750.00</div>
+    </div>
   </div>
 </template>
 
 <script>
+  import drawQrcode from 'weapp-qrcode'
+  import wxbarcode from 'wxbarcode'
   import footerBar from '@/components/footer-bar'
   let historyCardList = [{
     cardValue: 5,
@@ -79,6 +96,7 @@
     name: 'index',
     data () {
       return {
+        showModalStatus: false,
         useFlag: 1, // 是否可用
         cardList: [{
           cardValue: 50,
@@ -93,7 +111,10 @@
           cardValue: 400,
           cardNum: 1
         }],
-        historyCardList: []
+        historyCardList: [],
+        payCode: 'C17239492002454903',
+        payCodeStr: '',
+        isShowPayCode: false // 是否显示支付码
       }
     },
     components: {
@@ -107,6 +128,40 @@
         wx.navigateTo({
           url: `../detail/main?id=${id}`
         })
+      },
+      showPayCode () {
+        this.showModalStatus = true
+        wxbarcode.barcode('bacCanvas', this.payCode, 420, 100)
+        drawQrcode({
+          width: 130,
+          height: 130,
+          canvasId: 'qrcCanvas',
+          text: this.payCode
+        })
+      },
+      closeModal () {
+        this.showModalStatus = false
+        this.isShowPayCode = false
+        this.payCodeStr = this.getFuzzyCode(this.payCode, 4)
+      },
+      /**
+       * 获取模糊code
+       * @param code  原始code
+       * @param fuzzyLength 模糊位数
+       */
+      getFuzzyCode (code, fuzzyLength) {
+        let lLen = Math.ceil((code.length - fuzzyLength) / 2)
+        let rLen = code.length - fuzzyLength - lLen
+        let reg = new RegExp(`^(\\w{${lLen}})\\w{4}(\\w{${rLen}})$`)
+        return code.replace(reg, '$1****$2')
+      },
+      toggleEntireCode () {
+        if (this.isShowPayCode) {
+          this.payCodeStr = this.getFuzzyCode(this.payCode, 4)
+        } else {
+          this.payCodeStr = this.payCode
+        }
+        this.isShowPayCode = !this.isShowPayCode
       }
     },
     onLoad () {
@@ -114,6 +169,7 @@
     },
     mounted () {
       this.historyCardList = Math.random() < 0.6 ? historyCardList : []
+      this.payCodeStr = this.getFuzzyCode(this.payCode, 4)
     }
   }
 </script>

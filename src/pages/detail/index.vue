@@ -5,9 +5,9 @@
     </div>
     <div class="title">礼品卡号</div>
     <div class="card-content">
-      <div class="card-item">
-        <div>80002510112054</div>
-        <div class="icon" v-if="cardDetail.useFlag == 1"><img src="/static/images/xzkh.png" alt=""></div>
+      <div class="card-item" v-for="item in cardNoList" :key="key" @click="toggleChoose(item)">
+        <div v-text="item.cardNo"></div>
+        <div class="icon" v-if="cardDetail.useFlag == 1"><img :src="'/static/images/'+ (item.selected ?'xzkh':'wxzkh') + '.png'" alt=""></div>
       </div>
     </div>
     <div class="title">卡详情</div>
@@ -65,6 +65,11 @@
         cardNoList: []
       }
     },
+    methods: {
+      toggleChoose (item) {
+        item.selected = !item.selected
+      }
+    },
     onLoad () {
       Object.assign(this.$data, this.$options.data())
     },
@@ -76,6 +81,7 @@
       cardDetail.buyDatetime = formatTime(now)
       cardDetail.buyOrderNo = now.getTime()
       this.cardDetail = cardDetail
+      this.cardNoList = [{cardNo: '802001768201000001', selected: true}]
     }
   }
 </script>
